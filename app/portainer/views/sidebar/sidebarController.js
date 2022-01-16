@@ -1,8 +1,11 @@
+import { isOfflineEndpoint } from '@/portainer/helpers/endpointHelper';
+
 angular.module('portainer.app').controller('SidebarController', SidebarController);
 
 function SidebarController($rootScope, $scope, $transitions, StateManager, Notifications, Authentication, UserService, EndpointProvider) {
   $scope.applicationState = StateManager.getState();
-  $scope.endpointState = EndpointProvider.endpoint();
+  const endpoint = EndpointProvider.currentEndpoint();
+  $scope.isOfflineEndpoint = !!endpoint && isOfflineEndpoint(endpoint);
   $scope.display = !window.ddExtension;
 
   function checkPermissions(memberships) {
@@ -42,12 +45,11 @@ function SidebarController($rootScope, $scope, $transitions, StateManager, Notif
 
   initView();
 
-  function shouldShowStacks() {
+  function shouldShowStacks(endpoint) {
     if (isClusterAdmin()) {
       return true;
     }
 
-    const endpoint = EndpointProvider.currentEndpoint();
     if (!endpoint || !endpoint.SecuritySettings) {
       return false;
     }
@@ -57,7 +59,10 @@ function SidebarController($rootScope, $scope, $transitions, StateManager, Notif
 
   $transitions.onEnter({}, async () => {
     $scope.endpointId = EndpointProvider.endpointID();
-    $scope.showStacks = shouldShowStacks();
+    const endpoint = EndpointProvider.currentEndpoint();
+    $scope.isOfflineEndpoint = !!endpoint && isOfflineEndpoint(endpoint);
+
+    $scope.showStacks = shouldShowStacks(endpoint);
     $scope.isAdmin = isClusterAdmin();
 
     if ($scope.applicationState.endpoint.name) {
