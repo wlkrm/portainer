@@ -6,7 +6,10 @@ LABEL org.opencontainers.image.title="Portainer" \
   com.docker.desktop.extension.api.version=">= 0.2.2" \
   com.docker.desktop.extension.icon="https://portainer-io-assets.sfo2.cdn.digitaloceanspaces.com/logos/portainer.png" \
   com.docker.extension.screenshots="[{\"alt\": \"our company logo\", \"url\": \"https://portainer-io-assets.sfo2.cdn.digitaloceanspaces.com/logos/portainer.png\"}]" \
-  com.docker.extension.detailed-description="This is an example description for the extension" \
+  com.docker.extension.detailed-description="This is an example description for the extension\
+  \
+  \
+  It is really cool!" \
   com.docker.extension.publisher-url="https://www.portainer.io"
 
 COPY dist /
